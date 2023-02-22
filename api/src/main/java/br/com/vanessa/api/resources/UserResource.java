@@ -1,6 +1,7 @@
 package br.com.vanessa.api.resources;
 
 import br.com.vanessa.api.domain.dto.UserDTO;
+import br.com.vanessa.api.repositories.UserRepository;
 import br.com.vanessa.api.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(value = "/user")
 public class UserResource {
@@ -18,8 +22,18 @@ public class UserResource {
     private ModelMapper mapper;
     @Autowired
     private UserService service;
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Integer id){
         return ResponseEntity.ok().body(mapper.map(service.findById(id), UserDTO.class));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> findAll() {
+        return ResponseEntity.ok()
+                .body(service.findAll()
+                        .stream().map(x -> mapper.map(x, UserDTO.class)).collect(Collectors.toList()));
     }
 }
