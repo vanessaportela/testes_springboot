@@ -4,6 +4,7 @@ import br.com.vanessa.api.domain.User;
 import br.com.vanessa.api.domain.dto.UserDTO;
 import br.com.vanessa.api.repositories.UserRepository;
 import br.com.vanessa.api.service.UserService;
+import br.com.vanessa.api.service.exceptions.DataIntegratyViolationException;
 import br.com.vanessa.api.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO obj) {
+        findByEmail(obj);
         return repository.save(mapper.map(obj, User.class));
+    }
+
+    private void findByEmail(UserDTO obj) {
+        Optional<User> user = repository.findByEmail(obj.getEmail());
+        if(user.isPresent()) {
+            throw new DataIntegratyViolationException("E-mail já cadastrado no sistema");
+        }
     }
 }
