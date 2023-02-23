@@ -3,7 +3,7 @@ package br.com.vanessa.api.service.impl;
 import br.com.vanessa.api.domain.User;
 import br.com.vanessa.api.domain.dto.UserDTO;
 import br.com.vanessa.api.repositories.UserRepository;
-import br.com.vanessa.api.service.exceptions.DataIntegratyViolationException;
+import br.com.vanessa.api.service.exceptions.DataIntegrityViolationException;
 import br.com.vanessa.api.service.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,7 +113,7 @@ class UserServiceImplTest {
             optionalUser.get().setId(2);
             service.create(userDTO);
         } catch (Exception ex) {
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(E_MAIL_JÁ_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
     }
@@ -140,7 +140,7 @@ class UserServiceImplTest {
             optionalUser.get().setId(2);
             service.create(userDTO);
         } catch (Exception ex) {
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(E_MAIL_JÁ_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
     }
